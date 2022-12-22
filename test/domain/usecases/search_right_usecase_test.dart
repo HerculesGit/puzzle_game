@@ -32,5 +32,42 @@ void main() {
         puzzleTable: puzzleTable);
 
     expect(currentPiece.rightPieces.length, 2);
+    expect(currentPiece.downPieces.length, 0);
+    expect(currentPiece.leftPieces.length, 0);
+    expect(currentPiece.upPieces.length, 0);
+  });
+
+  test('should found 1 right piece with yellow color', () {
+    final sut = SearchRightUseCase();
+
+    final currentPosition = Pos(row: 1, column: 4);
+    Piece currentPiece = Piece(position: currentPosition, color: Colors.yellow);
+
+    sut(
+        nextPieces: currentPiece.rightPieces,
+        currentPiece: currentPiece,
+        puzzleTable: puzzleTable);
+
+    expect(currentPiece.rightPieces.length, 1);
+    expect(currentPiece.downPieces.length, 0);
+    expect(currentPiece.leftPieces.length, 0);
+    expect(currentPiece.upPieces.length, 0);
+  });
+
+  test('should found 0 right piece with yellow color', () {
+    final sut = SearchRightUseCase();
+
+    final currentPosition = Pos(row: 1, column: 3);
+    Piece currentPiece = Piece(position: currentPosition, color: Colors.green);
+
+    sut(
+        nextPieces: currentPiece.rightPieces,
+        currentPiece: currentPiece,
+        puzzleTable: puzzleTable);
+
+    expect(currentPiece.rightPieces.length, 0);
+    expect(currentPiece.downPieces.length, 0);
+    expect(currentPiece.leftPieces.length, 0);
+    expect(currentPiece.upPieces.length, 0);
   });
 }
