@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'presentation/screens.dart';
+import 'presentation/screens/puzzle_game_table_screen.dart';
 
 void main() {
   runApp(const MyApp());
