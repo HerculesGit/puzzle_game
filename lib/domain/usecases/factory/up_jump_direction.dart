@@ -1,6 +1,6 @@
 import 'jump_direction.dart';
 
-class LeftJumpDirection implements JumpDirection {
+class UpJumpDirection implements JumpDirection {
   @override
   int jumpToColumn() => 0;
 

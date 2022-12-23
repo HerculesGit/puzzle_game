@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:puzzle_game/domain/entities/piece_entity.dart';
-import 'package:puzzle_game/domain/usecases/search_left_usecase.dart';
+import 'package:puzzle_game/domain/usecases/factory/jump_direction.dart';
+import 'package:puzzle_game/domain/usecases/factory/left_jump_direction.dart';
+import 'package:puzzle_game/domain/usecases/find_pieces_usecase.dart';
 import 'package:test/test.dart';
 
 List<Piece> puzzleTable = [
@@ -20,10 +22,12 @@ List<Piece> puzzleTable = [
 ];
 
 void main() {
-  late SearchLeftUseCase sut;
+  late FindPiecesUseCase sut;
+  late JumpDirection jumpDirection;
 
   setUp(() {
-    sut = SearchLeftUseCase();
+    sut = FindPiecesUseCase();
+    jumpDirection = LeftJumpDirection();
   });
 
   test('should found 0 left piece', () {
@@ -31,6 +35,7 @@ void main() {
         Piece(position: Pos(row: 1, column: 1), color: Colors.purple);
 
     sut(
+        jumpDirection: jumpDirection,
         nextPieces: purplePiece.leftPieces,
         currentPiece: purplePiece,
         puzzleTable: puzzleTable);
@@ -44,6 +49,7 @@ void main() {
         Piece(position: Pos(row: 1, column: 2), color: Colors.yellow);
 
     sut(
+        jumpDirection: jumpDirection,
         nextPieces: yellowPiece.leftPieces,
         currentPiece: yellowPiece,
         puzzleTable: puzzleTable);
@@ -64,6 +70,7 @@ void main() {
     yellowPiece = Piece(position: Pos(row: 1, column: 4), color: Colors.yellow);
 
     sut(
+        jumpDirection: jumpDirection,
         nextPieces: yellowPiece.leftPieces,
         currentPiece: yellowPiece,
         puzzleTable: puzzleTable);
@@ -79,6 +86,7 @@ void main() {
         Piece(position: Pos(row: 1, column: 5), color: Colors.yellow);
 
     sut(
+        jumpDirection: jumpDirection,
         nextPieces: yellowPiece.leftPieces,
         currentPiece: yellowPiece,
         puzzleTable: puzzleTable);
@@ -91,6 +99,7 @@ void main() {
     var bluePiece = Piece(position: Pos(row: 2, column: 4), color: Colors.blue);
 
     sut(
+        jumpDirection: jumpDirection,
         nextPieces: bluePiece.leftPieces,
         currentPiece: bluePiece,
         puzzleTable: puzzleTable);
@@ -105,6 +114,7 @@ void main() {
     var bluePiece = Piece(position: Pos(row: 2, column: 5), color: Colors.blue);
 
     sut(
+        jumpDirection: jumpDirection,
         nextPieces: bluePiece.leftPieces,
         currentPiece: bluePiece,
         puzzleTable: puzzleTable);
@@ -119,6 +129,7 @@ void main() {
     var bluePiece = Piece(position: Pos(row: 2, column: 5), color: Colors.blue);
 
     sut(
+        jumpDirection: jumpDirection,
         nextPieces: bluePiece.leftPieces,
         currentPiece: bluePiece,
         puzzleTable: puzzleTable);
