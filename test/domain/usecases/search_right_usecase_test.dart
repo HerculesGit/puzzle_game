@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:puzzle_game/domain/entities/piece_entity.dart';
-import 'package:puzzle_game/domain/usecases/search_right_usecase.dart';
+import 'package:puzzle_game/domain/usecases/factory/jump_direction.dart';
+import 'package:puzzle_game/domain/usecases/factory/right_jump_direction.dart';
+import 'package:puzzle_game/domain/usecases/find_pieces_usecase.dart';
 import 'package:test/test.dart';
 
 List<Piece> puzzleTable = [
@@ -20,13 +22,20 @@ List<Piece> puzzleTable = [
 ];
 
 void main() {
-  test('should found 2 right piece with blue color', () {
-    final sut = SearchRightUseCase();
+  late FindPiecesUseCase sut;
+  late JumpDirection jumpDirection;
 
+  setUp(() {
+    sut = FindPiecesUseCase();
+    jumpDirection = RightJumpDirection();
+  });
+
+  test('should found 2 right piece with blue color', () {
     final currentPosition = Pos(row: 2, column: 3);
     Piece currentPiece = Piece(position: currentPosition, color: Colors.blue);
 
     sut(
+        jumpDirection: jumpDirection,
         nextPieces: currentPiece.rightPieces,
         currentPiece: currentPiece,
         puzzleTable: puzzleTable);
@@ -38,12 +47,11 @@ void main() {
   });
 
   test('should found 1 right piece with yellow color', () {
-    final sut = SearchRightUseCase();
-
     final currentPosition = Pos(row: 1, column: 4);
     Piece currentPiece = Piece(position: currentPosition, color: Colors.yellow);
 
     sut(
+        jumpDirection: jumpDirection,
         nextPieces: currentPiece.rightPieces,
         currentPiece: currentPiece,
         puzzleTable: puzzleTable);
@@ -55,12 +63,11 @@ void main() {
   });
 
   test('should found 0 right piece with yellow color', () {
-    final sut = SearchRightUseCase();
-
     final currentPosition = Pos(row: 1, column: 3);
     Piece currentPiece = Piece(position: currentPosition, color: Colors.green);
 
     sut(
+        jumpDirection: jumpDirection,
         nextPieces: currentPiece.rightPieces,
         currentPiece: currentPiece,
         puzzleTable: puzzleTable);
