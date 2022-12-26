@@ -1,19 +1,26 @@
-import '../entities/piece_entity.dart';
+import 'package:puzzle_game/domain/entities/piece_entity.dart';
 
-class SearchLeftUseCase {
+import 'factory/jump_direction.dart';
+
+/// horizontal and vertical
+class FindPiecesUseCase {
   List<Piece> call({
     required List<Piece> nextPieces,
     required List<Piece> puzzleTable,
+    required JumpDirection jumpDirection,
     required Piece currentPiece,
   }) {
-    final Piece nextPiece =
-        _getNextPosition(puzzleTable: puzzleTable, currentPiece: currentPiece);
+    final Piece nextPiece = _getNextPosition(
+        puzzleTable: puzzleTable,
+        currentPiece: currentPiece,
+        jumpDirection: jumpDirection);
 
     if (nextPiece != pieceNotFound && nextPiece.color == currentPiece.color) {
       nextPieces.add(nextPiece);
       call(
           nextPieces: nextPieces,
           currentPiece: nextPiece,
+          jumpDirection: jumpDirection,
           puzzleTable: puzzleTable);
     }
 
@@ -21,9 +28,11 @@ class SearchLeftUseCase {
   }
 
   Piece _getNextPosition(
-      {required List<Piece> puzzleTable, required Piece currentPiece}) {
-    final int column = currentPiece.position.column - 1;
-    final int row = currentPiece.position.row;
+      {required List<Piece> puzzleTable,
+      required Piece currentPiece,
+      required JumpDirection jumpDirection}) {
+    int column = currentPiece.position.column + jumpDirection.jumpToColumn();
+    int row = currentPiece.position.row + jumpDirection.jumpToRow();
 
     final Pos nextPosition = Pos(row: row, column: column);
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:puzzle_game/domain/entities/piece_entity.dart';
 import 'package:puzzle_game/domain/usecases/factory/jump_direction.dart';
-import 'package:puzzle_game/domain/usecases/factory/left_jump_direction.dart';
+import 'package:puzzle_game/domain/usecases/factory/up_jump_direction.dart';
 import 'package:puzzle_game/domain/usecases/find_pieces_usecase.dart';
 import 'package:test/test.dart';
 
@@ -19,6 +19,16 @@ List<Piece> puzzleTable = [
   Piece(position: Pos(row: 2, column: 3), color: Colors.blue),
   Piece(position: Pos(row: 2, column: 4), color: Colors.blue),
   Piece(position: Pos(row: 2, column: 5), color: Colors.blue),
+
+  /// row 3
+  Piece(position: Pos(row: 3, column: 2), color: Colors.blue),
+  Piece(position: Pos(row: 3, column: 5), color: Colors.blue),
+
+  /// row 4
+  Piece(position: Pos(row: 4, column: 2), color: Colors.blue),
+
+  /// row 5
+  Piece(position: Pos(row: 5, column: 2), color: Colors.blue),
 ];
 
 void main() {
@@ -27,7 +37,7 @@ void main() {
 
   setUp(() {
     sut = FindPiecesUseCase();
-    jumpDirection = LeftJumpDirection();
+    jumpDirection = UpJumpDirection();
   });
 
   test('should found 0 left piece', () {
@@ -36,7 +46,7 @@ void main() {
 
     sut(
         jumpDirection: jumpDirection,
-        nextPieces: purplePiece.leftPieces,
+        nextPieces: purplePiece.upPieces,
         currentPiece: purplePiece,
         puzzleTable: puzzleTable);
 
@@ -50,7 +60,7 @@ void main() {
 
     sut(
         jumpDirection: jumpDirection,
-        nextPieces: yellowPiece.leftPieces,
+        nextPieces: yellowPiece.upPieces,
         currentPiece: yellowPiece,
         puzzleTable: puzzleTable);
 
@@ -62,6 +72,12 @@ void main() {
     Piece greenPiece =
         Piece(position: Pos(row: 1, column: 3), color: Colors.green);
 
+    sut(
+        jumpDirection: jumpDirection,
+        nextPieces: greenPiece.upPieces,
+        currentPiece: yellowPiece,
+        puzzleTable: puzzleTable);
+
     expect(greenPiece.leftPieces.length, 0);
     expect(greenPiece.upPieces.length, 0);
     expect(greenPiece.rightPieces.length, 0);
@@ -71,27 +87,11 @@ void main() {
 
     sut(
         jumpDirection: jumpDirection,
-        nextPieces: yellowPiece.leftPieces,
+        nextPieces: yellowPiece.upPieces,
         currentPiece: yellowPiece,
         puzzleTable: puzzleTable);
 
     expect(yellowPiece.leftPieces.length, 0);
-    expect(yellowPiece.upPieces.length, 0);
-    expect(yellowPiece.rightPieces.length, 0);
-    expect(yellowPiece.downPieces.length, 0);
-  });
-
-  test('should found 1 right piece', () {
-    var yellowPiece =
-        Piece(position: Pos(row: 1, column: 5), color: Colors.yellow);
-
-    sut(
-        jumpDirection: jumpDirection,
-        nextPieces: yellowPiece.leftPieces,
-        currentPiece: yellowPiece,
-        puzzleTable: puzzleTable);
-
-    expect(yellowPiece.leftPieces.length, 1);
     expect(yellowPiece.upPieces.length, 0);
     expect(yellowPiece.rightPieces.length, 0);
     expect(yellowPiece.downPieces.length, 0);
@@ -100,43 +100,57 @@ void main() {
 
     sut(
         jumpDirection: jumpDirection,
-        nextPieces: bluePiece.leftPieces,
+        nextPieces: bluePiece.downPieces,
         currentPiece: bluePiece,
         puzzleTable: puzzleTable);
 
-    expect(bluePiece.leftPieces.length, 1);
+    expect(bluePiece.leftPieces.length, 0);
     expect(bluePiece.upPieces.length, 0);
     expect(bluePiece.rightPieces.length, 0);
     expect(bluePiece.downPieces.length, 0);
   });
 
-  test('should found 2 right piece', () {
-    var bluePiece = Piece(position: Pos(row: 2, column: 5), color: Colors.blue);
+  test('should found 1 right piece', () {
+    var yellowPiece =
+        Piece(position: Pos(row: 2, column: 2), color: Colors.yellow);
 
     sut(
         jumpDirection: jumpDirection,
-        nextPieces: bluePiece.leftPieces,
+        nextPieces: yellowPiece.upPieces,
+        currentPiece: yellowPiece,
+        puzzleTable: puzzleTable);
+
+    expect(yellowPiece.leftPieces.length, 0);
+    expect(yellowPiece.upPieces.length, 1);
+    expect(yellowPiece.rightPieces.length, 0);
+    expect(yellowPiece.downPieces.length, 0);
+
+    var bluePiece = Piece(position: Pos(row: 3, column: 5), color: Colors.blue);
+
+    sut(
+        jumpDirection: jumpDirection,
+        nextPieces: bluePiece.upPieces,
         currentPiece: bluePiece,
         puzzleTable: puzzleTable);
 
-    expect(bluePiece.leftPieces.length, 2);
-    expect(bluePiece.upPieces.length, 0);
+    expect(bluePiece.leftPieces.length, 0);
+    expect(bluePiece.upPieces.length, 1);
     expect(bluePiece.rightPieces.length, 0);
     expect(bluePiece.downPieces.length, 0);
   });
 
   test('should found 2 right piece', () {
-    var bluePiece = Piece(position: Pos(row: 2, column: 5), color: Colors.blue);
+    var bluePiece = Piece(position: Pos(row: 5, column: 2), color: Colors.blue);
 
     sut(
         jumpDirection: jumpDirection,
-        nextPieces: bluePiece.leftPieces,
+        nextPieces: bluePiece.downPieces,
         currentPiece: bluePiece,
         puzzleTable: puzzleTable);
 
-    expect(bluePiece.leftPieces.length, 2);
+    expect(bluePiece.leftPieces.length, 0);
     expect(bluePiece.upPieces.length, 0);
     expect(bluePiece.rightPieces.length, 0);
-    expect(bluePiece.downPieces.length, 0);
+    expect(bluePiece.downPieces.length, 2);
   });
 }
